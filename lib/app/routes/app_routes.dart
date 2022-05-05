@@ -13,6 +13,7 @@ abstract class Routes {
   static const PUBLIC_CONTROLLER = _Paths.PUBLIC_CONTROLLER;
 
   static const AVATAR = _Paths.AVATAR;
+  static const ADDBERITA = _Paths.ADDBERITA;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const PUBLIC_CONTROLLER = '/public-controller';
 
   static const AVATAR = '/avatar';
+  static const ADDBERITA = '/addberita';
 }

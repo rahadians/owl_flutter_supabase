@@ -19,6 +19,7 @@ class AddnewsController extends GetxController {
   RxString selectedImagePath = ''.obs;
   RxString selectedImageName = ''.obs;
   RxString selectedImageSize = ''.obs;
+  RxString no_id = "".obs;
 
   // late XFile? ambilGambar;
   late File xfile;
@@ -32,13 +33,14 @@ class AddnewsController extends GetxController {
   final usernameC = TextEditingController();
   final websiteC = TextEditingController();
 
-  final SupabaseClient client =
-      SupabaseClient(BaseUrl.cBaseUrl, BaseUrl.cAnonKey);
+  // final SupabaseClient client =
+  //     SupabaseClient(BaseUrl.cBaseUrl, BaseUrl.cAnonKey);
+  SupabaseClient client = Supabase.instance.client;
 
   Future<void> upload() async {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
-      source: ImageSource.gallery,
+      source: ImageSource.camera,
       maxWidth: 200,
       maxHeight: 200,
     );
@@ -67,28 +69,35 @@ class AddnewsController extends GetxController {
         client.storage.from('images').getPublicUrl(filePath);
 
     imageUrl.value = imageUrlResponse.data.toString();
-
-    // onUpload(imageUrlResponse.data!);
   }
 
-  // Future<void> onUpload(String imageUrl) async {
-  //   final response = await client.from('profiles').upsert({
-  //     'id': client.auth.currentUser!.id,
-  //     'avatar_url': imageUrl,
-  //     "updated_at": updatedAt,
-  //     "username": username,
-  //     "avatar_url": avatarUrl,
-  //     "website": website,
-  //   }).execute();
-  //   final error = response.error;
-  //   if (error != null) {
-  //     Get.snackbar("error", error.message);
-  //   }
-  //   {
-  //     avatarUrl.value = imageUrl;
-  //     print(avatarUrl.value);
+  simpan() async {
+    // if (imageUrl.value.isNotEmpty &&
+    //     usernameC.text.isNotEmpty &&
+    //     websiteC.text.isNotEmpty) {
 
-  //     Get.snackbar("error", "Update your profile image");
-  //   }
-  // }
+    // if (usernameC.text.isNotEmpty) {
+    isLoading.value = true;
+
+    try {
+      await client.from("profiles").insert({
+        "id": client.auth.currentUser!.id,
+        "username": usernameC.text,
+        "website": websiteC.text,
+        "avatar_url": imageUrl.value.toString(),
+        "updated_at": DateTime.now().toIso8601String()
+      }).execute();
+
+      Get.snackbar("Info", "Data Sudah Tersimpan",
+          duration: Duration(seconds: 3));
+    } catch (err) {
+      print(err);
+    }
+
+    isLoading.value = false;
+    // Get.back();
+    // } else {
+    //   Get.snackbar("error", "knapa salah", duration: Duration(seconds: 3));
+    // }
+  }
 }

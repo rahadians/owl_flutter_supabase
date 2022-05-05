@@ -18,7 +18,7 @@ class ProfilesModel {
     required this.website,
   });
 
-  int id;
+  String id;
   String updatedAt;
   String username;
   String avatarUrl;

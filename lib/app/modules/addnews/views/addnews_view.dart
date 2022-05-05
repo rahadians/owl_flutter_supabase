@@ -10,12 +10,15 @@ import '../../../assets/models/constant.dart';
 import '../controllers/addnews_controller.dart';
 
 // "https://mnxjbshqqxhbadvuazxt.supabase.co/storage/v1/object/public/images/Mango Mojito.jpg",
+SupabaseClient client = Supabase.instance.client;
 
 class AddnewsView extends GetView<AddnewsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {}),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        print(client.auth.currentUser!.id.runtimeType);
+      }),
       appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -41,34 +44,52 @@ class AddnewsView extends GetView<AddnewsController> {
                             ))))),
             TextFormField(
               controller: controller.usernameC,
-              decoration: kTextFieldDecoration.copyWith(labelText: "Title"),
-              onChanged: (value) => controller.usernameC.text = value,
+              keyboardType: TextInputType.text,
+              autocorrect: false,
+              decoration: kTextFieldDecoration.copyWith(labelText: "Username"),
+              onChanged: (value) => value = controller.usernameC.text,
             ),
             SizedBox(
               height: 20,
             ),
             TextFormField(
+              autocorrect: false,
               keyboardType: TextInputType.multiline,
               maxLength: null, //menyesuaikan isi kontent
               controller: controller.websiteC,
-              decoration: kTextFieldDecoration.copyWith(labelText: "Content"),
-              onChanged: (value) => controller.websiteC.text = value,
+              decoration: kTextFieldDecoration.copyWith(labelText: "Website"),
+              onChanged: (value) => value = controller.websiteC.text,
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "Masukkan Email Anda";
+                } else {
+                  return null;
+                }
+              },
             ),
             SizedBox(
               height: 20,
             ),
             // TextFormField(
             //   controller: controller.descC,
-            //   decoration:
-            //       kTextFieldDecoration.copyWith(labelText: "Description"),
-            //   onChanged: (value) => controller.descC.text = value,
-            // ),
-            // SizedBox(
-            //   height: 20,
+            //   autocorrect: false,
+            //   keyboardType: TextInputType.emailAddress,
+            //   validator: (value) {
+            //     if (value!.isEmpty) {
+            //       return "Masukkan Email Anda";
+            //     } else {
+            //       return null;
+            //     }
+            //   },
+            //   // onSaved: (value) => controller.descC.value = value!,
+            //   onChanged: (value) {
+            //     // controller.descC.value = value;
+            //   },
+            //   decoration: kTextFieldDecoration.copyWith(hintText: 'Email'),
             // ),
             ElevatedButton(
                 onPressed: () {
-                  // controller.submit();
+                  controller.simpan();
                 },
                 child: Text("Save"))
           ]),
