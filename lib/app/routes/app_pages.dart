@@ -10,6 +10,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/home/views/widgets/splash_screen.dart';
 import '../modules/home/views/widgets/test.dart';
+import '../modules/home_grid_view/bindings/home_grid_view_binding.dart';
+import '../modules/home_grid_view/views/home_grid_view_view.dart';
 import '../modules/imagepicker/bindings/imagepicker_binding.dart';
 import '../modules/imagepicker/views/imagepicker_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -86,6 +88,11 @@ class AppPages {
       name: _Paths.AVATAR,
       page: () => AvatarView(),
       binding: AvatarBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME_GRID_VIEW,
+      page: () => HomeGridViewView(),
+      binding: HomeGridViewBinding(),
     ),
   ];
 }

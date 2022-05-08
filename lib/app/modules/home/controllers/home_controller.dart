@@ -13,8 +13,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../assets/models/newsmodel.dart';
-
+// import '../../../assets/models/newsmodel.dart';
+import '../../../assets/models/tablenews.dart';
 import '../../signup/controllers/signup_controller.dart';
 
 class HomeController extends GetxController {
@@ -24,6 +24,8 @@ class HomeController extends GetxController {
   RxString idNews = "".obs;
 
   RxBool isloading = false.obs;
+
+  final contenC = TextEditingController();
 
   Future getNewsData() async {
     allNewsData.clear(); //menghapus data list
@@ -40,17 +42,22 @@ class HomeController extends GetxController {
       final data = response.data;
       final error = response.status;
 
-      List<NewsModel> dataNote =
-          NewsModel.fromJsonList((response.data as List));
+      List<TableNews> dataNote = TableNews.fromJsonList(response.data as List);
 
       allNewsData.value = List.from(dataNote);
 
       allNewsData.refresh();
 
-      // print(allNewsData[0]["id_news"]);
       isloading.value = false;
     } catch (err) {
       print(err);
     }
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    getNewsData;
   }
 }

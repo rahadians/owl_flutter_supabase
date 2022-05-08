@@ -16,14 +16,14 @@ Color kDarkerGreen = Color(0xFF70c1B3);
 Color kYellow = Color(0xFFF3FFBD);
 
 InputDecoration kTextFieldDecoration = InputDecoration(
-  contentPadding: EdgeInsets.only(left: 10),
+  contentPadding: EdgeInsets.only(left: 20, top: 5, bottom: 5),
   filled: true,
   fillColor: Color.fromRGBO(255, 255, 255, 0.3),
   focusColor: Color.fromRGBO(211, 211, 211, 1.0),
   hintText: '',
   hintStyle: TextStyle(color: Color(0xFF70C183), fontWeight: FontWeight.w800),
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.transparent, width: 3.0),
+    borderSide: BorderSide(color: kLightgreen, width: 3.0),
     borderRadius: BorderRadius.all(
       Radius.circular(30),
     ),

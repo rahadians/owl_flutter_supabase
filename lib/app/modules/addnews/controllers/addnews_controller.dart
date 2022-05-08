@@ -13,18 +13,21 @@ import 'package:path/path.dart';
 import '../../../assets/models/constant.dart';
 
 class AddnewsController extends GetxController {
-  RxBool isLoading = false.obs;
+  SupabaseClient client = Supabase.instance.client;
 
   RxString avatarUrl = "".obs;
   RxString imageUrl = "".obs;
+  RxString imageUrlStr = "".obs;
   RxString device = "".obs;
   RxString filepath = "".obs;
-
+  RxBool isLoadingadd = false.obs;
   RxString selectedImagePath = ''.obs;
   RxString selectedImageName = ''.obs;
   RxString selectedImageSize = ''.obs;
   RxString no_id = "".obs;
   RxString animationController = "".obs;
+
+  // bool isLoadingadd = false;
 
   late Uint8List filebytes;
 
@@ -38,12 +41,13 @@ class AddnewsController extends GetxController {
   final descC = TextEditingController();
   final usernameC = TextEditingController();
   final websiteC = TextEditingController();
+  final dateC = TextEditingController();
 
   // final SupabaseClient client =
   //     SupabaseClient(BaseUrl.cBaseUrl, BaseUrl.cAnonKey);
-  SupabaseClient client = Supabase.instance.client;
 
   Future<void> upload(ImageSource imageSource) async {
+    isLoadingadd.value = true;
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
       source: (imageSource == ImageSource.camera)
@@ -56,8 +60,6 @@ class AddnewsController extends GetxController {
       return;
       print("gagal");
     }
-
-    isLoading.value = true;
 
     File tmpFile = File(imageFile.path);
 
@@ -82,78 +84,109 @@ class AddnewsController extends GetxController {
     }
 
     imageUrl.value = newImage.toString();
-    print("========");
-    print("${bytes}");
-    print(extfilePath);
 
-    // print(imageUrl.value);
-
-    // final response =
-    //     await client.storage.from('images/temp').uploadBinary(filePath, bytes);
-
-    isLoading.value = false;
-
-    // final error = response.error;
-    // if (error != null) {
-    //   Get.snackbar("error", error.message);
-
-    //   return;
-    // }
-
-    // StorageResponse<String> imageUrlResponse =
-    //     client.storage.from('images/temp').getPublicUrl(filePath);
-
-    // imageUrl.value = imageUrlResponse.data.toString();
-    // imageUrl.value = imageFile.name;
+    isLoadingadd.value = false;
   }
 
-  simpan() async {
-    // if (imageUrl.value.isNotEmpty &&
-    //     usernameC.text.isNotEmpty &&
-    //     websiteC.text.isNotEmpty) {
+  void simpan() async {
+    if (imageUrl.value == "" ||
+        imageUrl.value.isEmpty ||
+        titleC.value == "" ||
+        titleC.text.isEmpty ||
+        contentC.value == "" ||
+        contentC.text.isEmpty ||
+        descC.value == "" ||
+        descC.text.isEmpty ||
+        dateC.value == "" ||
+        dateC.text.isEmpty) {
+      kDialoWarning();
+    } else {
+      isLoadingadd.value = true;
 
-    // if (usernameC.text.isNotEmpty) {
-    isLoading.value = true;
+      simpanGambar(filepath.value, filebytes);
 
+      try {
+        print(imageUrlStr.value.runtimeType);
+        print("ini imagestr ${imageUrlStr.value}");
+        await client.from("tbl_news").insert({
+          "id_user": client.auth.currentUser!.id,
+          "title": titleC.text,
+          "content": contentC.text,
+          "created_at": DateTime.now().toIso8601String(),
+          "date_news": dateC.text,
+          "description": descC.text,
+          "imageUrl": imageUrlStr.value,
+        }).execute();
+        kDialogOk();
+        isLoadingadd.value = false;
+      } catch (err) {
+        print("ada kesalahan ${err} di simpan table");
+      }
+
+      isLoadingadd.value = false;
+    }
+  }
+
+  void simpanGambar(path, bytes) {
     try {
-      print("simpanyyee");
-      // final response = await client.storage
-      //     .from('images/images')
-      //     .uploadBinary(filepath.value, filebytes!);
+      final response =
+          client.storage.from('images/images').uploadBinary(path, bytes);
 
-      print(filepath.value);
+      StorageResponse<String> imageUrlResponse =
+          client.storage.from('images/images').getPublicUrl(path);
 
-      final res = await client.storage
-          .from('images/temp')
-          .remove(['2022-05-05T17:52:34.254481.jpg']);
-
-      final resti =
-          await client.storage.from('avatars').remove(['avatar1.jpg']);
-
-      // StorageResponse<String> imageUrlResponse =
-      //     client.storage.from('images/images').getPublicUrl(filepath.value);
-
-      // await client.from("profiles").insert({
-      //   "id": client.auth.currentUser!.id,
-      //   "username": usernameC.text,
-      //   "website": websiteC.text,
-      //   "avatar_url": imageUrl.value.toString(),
-      //   "updated_at": DateTime.now().toIso8601String()
-      // }).execute();
-
-      // final response = imageFile;
-
-      Get.snackbar("Info", "Data Sudah Tersimpan",
-          duration: Duration(seconds: 3));
+      imageUrlStr.value = imageUrlResponse.data.toString();
     } catch (err) {
       print(err);
     }
-
-    isLoading.value = false;
   }
 
-  Future showToast(String message) async {
-    await Fluttertoast.cancel();
-    Fluttertoast.showToast(msg: message, fontSize: 18);
+  void hapusText() {
+    imageUrl.value = "";
+    titleC.text = "";
+    contentC.text = "";
+    descC.text = "";
+    usernameC.text = "";
+    websiteC.text = "";
+    dateC.text = "";
+  }
+
+  Future<dynamic> kDialoWarning() {
+    return Get.defaultDialog(
+      title: "Warning",
+      middleText: "Data Belum Terisi",
+      backgroundColor: Colors.teal,
+      titleStyle: TextStyle(color: Colors.white),
+      middleTextStyle: TextStyle(color: Colors.white),
+      radius: 30,
+      actions: [
+        TextButton(
+          child: const Text("Close"),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ],
+    );
+  }
+
+  Future<dynamic> kDialogOk() {
+    return Get.defaultDialog(
+      title: "Success",
+      middleText: "Data Sudah Tersimpan",
+      backgroundColor: Colors.teal,
+      titleStyle: TextStyle(color: Colors.white),
+      middleTextStyle: TextStyle(color: Colors.white),
+      radius: 30,
+      actions: [
+        TextButton(
+          child: const Text("Close"),
+          onPressed: () {
+            hapusText();
+            Get.back();
+          },
+        ),
+      ],
+    );
   }
 }

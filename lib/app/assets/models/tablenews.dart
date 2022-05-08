@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final newsModel = newsModelFromJson(jsonString);
+//     final tableNews = tableNewsFromJson(jsonString);
 
 import 'dart:convert';
 
-NewsModel newsModelFromJson(String str) => NewsModel.fromJson(json.decode(str));
+TableNews tableNewsFromJson(String str) => TableNews.fromJson(json.decode(str));
 
-String newsModelToJson(NewsModel data) => json.encode(data.toJson());
+String tableNewsToJson(TableNews data) => json.encode(data.toJson());
 
-class NewsModel {
-  NewsModel({
+class TableNews {
+  TableNews({
     required this.idNews,
     required this.content,
     required this.title,
@@ -29,7 +29,7 @@ class NewsModel {
   String idUser;
   String imageUrl;
 
-  factory NewsModel.fromJson(Map<String, dynamic> json) => NewsModel(
+  factory TableNews.fromJson(Map<String, dynamic> json) => TableNews(
         idNews: json["id_news"],
         content: json["content"],
         title: json["title"],
@@ -51,12 +51,8 @@ class NewsModel {
         "imageUrl": imageUrl,
       };
 
-  static List<NewsModel> fromJsonList(List list) {
-    if (list == null) {
-      print("data kosong");
-      return List<NewsModel>.empty();
-    }
-    // }return List<NewsModel>.empty();
-    return list.map((item) => NewsModel.fromJson(item)).toList();
+  static List<TableNews> fromJsonList(List list) {
+    if (list == null) return List<TableNews>.empty();
+    return list.map((item) => TableNews.fromJson(item)).toList();
   }
 }

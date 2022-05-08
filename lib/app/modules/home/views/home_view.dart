@@ -1,23 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:owl_flutter/app/assets/models/constant.dart';
-import 'package:owl_flutter/app/assets/models/newsmodel.dart';
+// import 'package:owl_flutter/app/assets/models/newsmodel.dart';
 import 'package:owl_flutter/app/assets/models/readnews.dart';
+import 'package:owl_flutter/app/assets/models/tablenews.dart';
 import 'package:owl_flutter/app/modules/home/controllers/home_controller.dart';
 import 'package:owl_flutter/app/routes/app_pages.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           Get.toNamed(Routes.ADDNEWS);
         },
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
-        toolbarHeight: 20,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.offAllNamed(Routes.HOME);
+              },
+              icon: Icon(Icons.list_alt_outlined)),
+          // SizedBox(
+          //   width: 5,
+          // ),
+          IconButton(
+              onPressed: () {
+                Get.offAllNamed(Routes.HOME_GRID_VIEW);
+              },
+              icon: Icon(Icons.grid_on_outlined)),
+        ],
+        title: Center(
+          child: Text(
+            "Daftar Barang",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -30,7 +52,7 @@ class HomeView extends GetView<HomeController> {
                   child: CircularProgressIndicator(),
                 );
               }
-              // ignore: unnecessary_null_comparison
+
               return Obx(() => (controller.allNewsData.length == null)
                   ? Center(
                       child: Text(
@@ -46,33 +68,80 @@ class HomeView extends GetView<HomeController> {
                           : ListView.builder(
                               itemCount: controller.allNewsData.length,
                               itemBuilder: (context, index) {
-                                NewsModel newsBody =
+                                TableNews newsBody =
                                     controller.allNewsData[index];
 
-                                return InkWell(
-                                  onTap: () {
-                                    Get.toNamed(Routes.README_NEWS, arguments: [
-                                      {
-                                        "title": newsBody.title,
-                                        "content": newsBody.content,
-                                        "description": newsBody.description,
-                                        "id_news": newsBody.idNews.toString()
-                                      },
-                                    ]);
-                                  },
-                                  child: ListTile(
-                                      leading: CircleAvatar(
-                                          child: Image.network(
-                                            'https://picsum.photos/250?image=9',
-                                            fit: BoxFit.cover,
-                                          ),
-                                          backgroundColor: Colors.blue),
-                                      title: Text("${newsBody.title}"),
-                                      subtitle: Text("${newsBody.content}"),
-                                      trailing: IconButton(
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () {},
-                                      )),
+                                return Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Get.toNamed(Routes.README_NEWS,
+                                          arguments: [
+                                            {
+                                              "title": newsBody.title,
+                                              "content": newsBody.content,
+                                              "description":
+                                                  newsBody.description,
+                                              "id_news":
+                                                  newsBody.idNews.toString()
+                                            },
+                                          ]);
+                                    },
+                                    child: Container(
+                                        width: double.infinity,
+                                        height: 100,
+                                        color: kLightgreen,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                                height: 100,
+                                                width: 100,
+                                                child: Image.network(
+                                                  "${newsBody.imageUrl}",
+                                                  fit: BoxFit.fill,
+                                                ),
+                                                color: Colors.transparent),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10.0,
+                                                  bottom: 2,
+                                                  right: 2),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: Text(
+                                                        "${newsBody.title} ",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20),
+                                                      ),
+                                                    ),
+                                                    height: 30,
+                                                    width: 250,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 1,
+                                                  ),
+                                                  Container(
+                                                    width: 250,
+                                                    child: Text(
+                                                      "${newsBody.content}",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        )),
+                                  ),
                                 );
                               }),
                     ));
