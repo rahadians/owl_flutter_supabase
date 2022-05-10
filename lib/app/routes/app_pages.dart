@@ -4,14 +4,20 @@ import '../modules/addnews/bindings/addnews_binding.dart';
 import '../modules/addnews/views/addnews_view.dart';
 import '../modules/avatar/bindings/avatar_binding.dart';
 import '../modules/avatar/views/avatar_view.dart';
+import '../modules/detail_item/bindings/detail_item_binding.dart';
+import '../modules/detail_item/views/detail_item_view.dart';
 import '../modules/editnews/bindings/editnews_binding.dart';
 import '../modules/editnews/views/editnews_view.dart';
 import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
-import '../modules/home/views/widgets/splash_screen.dart';
-import '../modules/home/views/widgets/test.dart';
+import '../modules/home/views/home_view.dart';
+import '../modules/home/views/home_view.dart';
 import '../modules/home_grid_view/bindings/home_grid_view_binding.dart';
-import '../modules/home_grid_view/views/home_grid_view_view.dart';
+import '../modules/home_grid_view/views/home_grid_view.dart';
+import '../modules/home_list/bindings/home_list_binding.dart';
+import '../modules/home_list/views/home_list_view.dart';
 import '../modules/imagepicker/bindings/imagepicker_binding.dart';
 import '../modules/imagepicker/views/imagepicker_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -33,6 +39,18 @@ class AppPages {
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
+      children: [
+        GetPage(
+          name: _Paths.HOME,
+          page: () => HomeView(),
+          binding: HomeBinding(),
+        ),
+        GetPage(
+          name: _Paths.HOME,
+          page: () => HomeView(),
+          binding: HomeBinding(),
+        ),
+      ],
     ),
     GetPage(
       name: '/homeScreen',
@@ -43,16 +61,6 @@ class AppPages {
       name: '/SignUpScreen',
       page: () => SignupView(),
       binding: SignupBinding(),
-    ),
-    GetPage(
-      name: '/SplashScreen',
-      page: () => SplashScreen(),
-      // binding: HomeBinding(),
-    ),
-    GetPage(
-      name: '/Test',
-      page: () => Test(),
-      // binding: HomeBinding(),
     ),
     GetPage(
       name: _Paths.SIGNUP,
@@ -93,6 +101,23 @@ class AppPages {
       name: _Paths.HOME_GRID_VIEW,
       page: () => HomeGridViewView(),
       binding: HomeGridViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME_LIST,
+      page: () => HomeListView(),
+      binding: HomeListBinding(),
+    ),
+    GetPage(
+      name: _Paths.DETAIL_ITEM,
+      page: () => DetailItemView(),
+      binding: DetailItemBinding(),
+      children: [
+        GetPage(
+          name: _Paths.DETAIL_ITEM,
+          page: () => DetailItemView(),
+          binding: DetailItemBinding(),
+        ),
+      ],
     ),
   ];
 }

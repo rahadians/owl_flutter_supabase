@@ -1,154 +1,35 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:owl_flutter/app/assets/models/constant.dart';
-// import 'package:owl_flutter/app/assets/models/newsmodel.dart';
-import 'package:owl_flutter/app/assets/models/readnews.dart';
-import 'package:owl_flutter/app/assets/models/tablenews.dart';
-import 'package:owl_flutter/app/modules/home/controllers/home_controller.dart';
-import 'package:owl_flutter/app/routes/app_pages.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:lottie/lottie.dart';
+import 'package:path/path.dart';
+import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Get.toNamed(Routes.ADDNEWS);
-        },
-        child: Icon(Icons.add),
-      ),
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                Get.offAllNamed(Routes.HOME);
-              },
-              icon: Icon(Icons.list_alt_outlined)),
-          // SizedBox(
-          //   width: 5,
-          // ),
-          IconButton(
-              onPressed: () {
-                Get.offAllNamed(Routes.HOME_GRID_VIEW);
-              },
-              icon: Icon(Icons.grid_on_outlined)),
-        ],
-        title: Center(
-          child: Text(
-            "Daftar Barang",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
+        backgroundColor: Colors.white70,
+        appBar: AppBar(
+          title: Text(''),
+          centerTitle: true,
         ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FutureBuilder(
-            future: controller.getNewsData(),
-            builder: ((context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              return Obx(() => (controller.allNewsData.length == null)
-                  ? Center(
-                      child: Text(
-                        "Data Tidak Ada",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    )
-                  : RefreshIndicator(
-                      onRefresh: () => controller.getNewsData(),
-                      child: (controller.isloading.value)
-                          ? CircularProgressIndicator()
-                          // : Text("loading")
-                          : ListView.builder(
-                              itemCount: controller.allNewsData.length,
-                              itemBuilder: (context, index) {
-                                TableNews newsBody =
-                                    controller.allNewsData[index];
-
-                                return Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Get.toNamed(Routes.README_NEWS,
-                                          arguments: [
-                                            {
-                                              "title": newsBody.title,
-                                              "content": newsBody.content,
-                                              "description":
-                                                  newsBody.description,
-                                              "id_news":
-                                                  newsBody.idNews.toString()
-                                            },
-                                          ]);
-                                    },
-                                    child: Container(
-                                        width: double.infinity,
-                                        height: 100,
-                                        color: kLightgreen,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                                height: 100,
-                                                width: 100,
-                                                child: Image.network(
-                                                  "${newsBody.imageUrl}",
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                color: Colors.transparent),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10.0,
-                                                  bottom: 2,
-                                                  right: 2),
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    child: Align(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: Text(
-                                                        "${newsBody.title} ",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 20),
-                                                      ),
-                                                    ),
-                                                    height: 30,
-                                                    width: 250,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 1,
-                                                  ),
-                                                  Container(
-                                                    width: 250,
-                                                    child: Text(
-                                                      "${newsBody.content}",
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        )),
-                                  ),
-                                );
-                              }),
-                    ));
-            }),
-          ),
-        ),
-      ),
-    );
+        body: Center(
+            child: Lottie.asset("lib/app/assets/lottie/lottie_dancer.zip")),
+        bottomNavigationBar: ConvexAppBar(
+            style: TabStyle.textIn,
+            items: [
+              TabItem(icon: Icons.list_alt, title: 'List'),
+              TabItem(icon: Icons.qr_code, title: 'Scan'),
+              TabItem(icon: Icons.home, title: 'Home'),
+              TabItem(icon: Icons.message, title: 'Message'),
+              TabItem(icon: Icons.add, title: 'Tambah'),
+            ],
+            initialActiveIndex: 2, //optional, default as 0
+            onTap: (int i) {
+              controller.pilihan.value = i;
+              controller.selectIndex();
+            }));
   }
 }

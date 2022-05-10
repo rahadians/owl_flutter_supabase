@@ -10,31 +10,21 @@ import 'package:owl_flutter/app/routes/app_pages.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomeGridViewView extends GetView<HomeGridViewController> {
-  final HomeC = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Get.toNamed(Routes.ADDNEWS);
-        },
-        child: Icon(Icons.add),
-      ),
       appBar: AppBar(
+        backgroundColor: Colors.blue[100],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.offAndToNamed(Routes.HOME),
+        ),
         actions: [
           IconButton(
               onPressed: () {
-                Get.toNamed(Routes.HOME);
+                Get.offAndToNamed(Routes.HOME_LIST);
               },
               icon: Icon(Icons.list_alt_outlined)),
-          // SizedBox(
-          //   width: 5,
-          // ),
-          IconButton(
-              onPressed: () {
-                Get.toNamed(Routes.HOME_GRID_VIEW);
-              },
-              icon: Icon(Icons.grid_on_outlined)),
         ],
         title: Center(
           child: Text(
@@ -47,7 +37,7 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FutureBuilder(
-            future: HomeC.getNewsData(),
+            future: controller.getNewsData(),
             builder: ((context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -55,7 +45,7 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
                 );
               }
 
-              return Obx(() => (HomeC.allNewsData.length == null)
+              return Obx(() => (controller.allNewsData.length == null)
                   ? Center(
                       child: Text(
                         "Data Tidak Ada",
@@ -63,23 +53,24 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
                       ),
                     )
                   : RefreshIndicator(
-                      onRefresh: () => HomeC.getNewsData(),
-                      child: (HomeC.isloading.value)
+                      onRefresh: () => controller.getNewsData(),
+                      child: (controller.isloading.value)
                           ? CircularProgressIndicator()
                           // : Text("loading")
                           : GridView.builder(
                               gridDelegate:
                                   // SliverGridDelegateWithFixedCrossAxisCount(
                                   SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                // crossAxisCount: 2,
+                                maxCrossAxisExtent: 2,
+
                                 childAspectRatio: 2 / 3,
                                 // crossAxisSpacing: 5,
                                 // mainAxisSpacing: 5
                               ),
-                              itemCount: HomeC.allNewsData.length,
+                              itemCount: controller.allNewsData.length,
                               itemBuilder: (context, index) {
-                                TableNews newsBody = HomeC.allNewsData[index];
+                                TableNews newsBody =
+                                    controller.allNewsData[index];
 
                                 return Padding(
                                   padding: const EdgeInsets.all(5.0),
@@ -156,79 +147,3 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
     );
   }
 }
-
-
-//                                     height: 100,
-//                                         width: double.infinity,     
-//                                               child:
-                                
-
-//                                       color: Colors.amber[100],
-//                                       child: Column(children: [
-//  Align(
-//                                                     alignment:
-//                                                         Alignment.centerLeft,
-//                                                     child: Text(
-//                                                       "${newsBody.title} ",
-//                                                       style: TextStyle(
-//                                                           fontWeight:
-//                                                               FontWeight.bold,
-//                                                           fontSize: 20),
-//                                                     ),
-//                                                   ),
-                                             
-//                                                 ),
-                                               
-//                                       ]
-                                      
-                                      // ),
-
-                                      // child: Row(
-                                      //   mainAxisAlignment:
-                                      //       MainAxisAlignment.start,
-                                      //   children: [
-                                      //     Container(
-                                      //         height: 100,
-                                      //         width: 100,
-                                      //         child: Image.network(
-                                      //           "${newsBody.imageUrl}",
-                                      //           fit: BoxFit.fill,
-                                      //         ),
-                                      //         color: Colors.transparent),
-                                      //     Padding(
-                                      //       padding: const EdgeInsets.only(
-                                      //           left: 10.0,
-                                      //           bottom: 2,
-                                      //           right: 2),
-                                      //       child: Column(
-                                      //         children: [
-                                      //           Container(
-                                      //             child: Align(
-                                      //               alignment:
-                                      //                   Alignment.centerLeft,
-                                      //               child: Text(
-                                      //                 "${newsBody.title} ",
-                                      //                 style: TextStyle(
-                                      //                     fontWeight:
-                                      //                         FontWeight.bold,
-                                      //                     fontSize: 20),
-                                      //               ),
-                                      //             ),
-                                      //             height: 30,
-                                      //             width: 250,
-                                      //           ),
-                                      //           SizedBox(
-                                      //             height: 1,
-                                      //           ),
-                                      //           Expanded(
-                                      //             child: Container(
-                                      //               width: 250,
-                                      //               child: Text(
-                                      //                   "${newsBody.content}"),
-                                      //             ),
-                                      //           ),
-                                      //         ],
-                                      //       ),
-                                      //     )
-                                      //   ],
-                                      // ),

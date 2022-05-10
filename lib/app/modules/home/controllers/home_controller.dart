@@ -1,63 +1,46 @@
-import 'dart:convert';
-import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
-
-import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
-// import '../../../assets/models/newsmodel.dart';
-import '../../../assets/models/tablenews.dart';
-import '../../signup/controllers/signup_controller.dart';
+import 'package:owl_flutter/app/routes/app_pages.dart';
 
 class HomeController extends GetxController {
-  RxString usernameAPI = "".obs;
-  RxString idUser = "".obs;
-  RxList allNewsData = List.empty().obs;
-  RxString idNews = "".obs;
+  //TODO: Implement HomeController
+  RxInt pilihan = 0.obs;
 
-  RxBool isloading = false.obs;
+  selectIndex() {
+    switch (pilihan.value) {
+      case 0:
+        {
+          Timer(Duration(seconds: 2), () {
+            Get.offAndToNamed(Routes.HOME_LIST);
+          });
+        }
+        break;
 
-  final contenC = TextEditingController();
+      case 1:
+        {
+          Timer(Duration(seconds: 2), () {
+            Get.toNamed(Routes.DETAIL_ITEM);
+          });
+        }
+        break;
 
-  Future getNewsData() async {
-    allNewsData.clear(); //menghapus data list
-    isloading.value = true;
-
-    SupabaseClient client = Supabase.instance.client;
-    try {
-      PostgrestResponse response = await client
-          .from('tbl_news')
-          .select()
-          .order('id_news', ascending: true)
-          .execute();
-
-      final data = response.data;
-      final error = response.status;
-
-      List<TableNews> dataNote = TableNews.fromJsonList(response.data as List);
-
-      allNewsData.value = List.from(dataNote);
-
-      allNewsData.refresh();
-
-      isloading.value = false;
-    } catch (err) {
-      print(err);
+      case 2:
+        {}
+        break;
+      case 3:
+        {
+          //statements;
+        }
+        break;
+      case 4:
+        {
+          Timer(Duration(seconds: 2), () {
+            Get.offAndToNamed(Routes.ADDNEWS);
+          });
+        }
+        break;
     }
-  }
-
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    getNewsData;
   }
 }

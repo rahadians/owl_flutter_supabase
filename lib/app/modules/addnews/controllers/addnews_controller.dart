@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,6 +27,7 @@ class AddnewsController extends GetxController {
   RxString selectedImageSize = ''.obs;
   RxString no_id = "".obs;
   RxString animationController = "".obs;
+  RxString isiBarcode = "".obs;
 
   // bool isLoadingadd = false;
 
@@ -42,6 +44,7 @@ class AddnewsController extends GetxController {
   final usernameC = TextEditingController();
   final websiteC = TextEditingController();
   final dateC = TextEditingController();
+  final scanC = TextEditingController();
 
   // final SupabaseClient client =
   //     SupabaseClient(BaseUrl.cBaseUrl, BaseUrl.cAnonKey);
@@ -70,6 +73,8 @@ class AddnewsController extends GetxController {
     filepath.value = filePath.toString();
     filebytes = bytes;
 
+    isiBarcode.value = fileName.toString() + filePath.toString();
+    print(DateTime.now().toIso8601String().substring(1, 4));
     final Directory extDir = await getApplicationDocumentsDirectory();
     String dirPath = extDir.path;
     final String extfilePath = '$dirPath/$fileName';

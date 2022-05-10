@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:owl_flutter/app/routes/app_pages.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../assets/models/constant.dart';
 import '../controllers/addnews_controller.dart';
@@ -24,7 +26,7 @@ class AddnewsView extends GetView<AddnewsController> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              Get.back();
+              Get.offAllNamed(Routes.HOME);
             }),
       ),
       body: SafeArea(
@@ -118,6 +120,23 @@ class AddnewsView extends GetView<AddnewsController> {
                   }
                   return null;
                 },
+                controller: controller.scanC,
+                keyboardType: TextInputType.text,
+                autocorrect: false,
+                decoration:
+                    kTextFieldDecoration.copyWith(labelText: "Code Scan"),
+                onChanged: (value) => value = controller.scanC.text,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
                 controller: controller.titleC,
                 keyboardType: TextInputType.text,
                 autocorrect: false,
@@ -188,6 +207,25 @@ class AddnewsView extends GetView<AddnewsController> {
                       DateFormat('dd-MMM-yyyy').format(date);
                 },
                 onChanged: (value) => value = controller.dateC.text,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Card(
+                elevation: 6,
+                shadowColor: Colors.white24,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: BarcodeWidget(
+                    drawText: true,
+                    height: 100,
+                    width: 100,
+                    data: controller.scanC.text,
+                    barcode: Barcode.qrCode(
+                      errorCorrectLevel: BarcodeQRCorrectionLevel.high,
+                    ),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 20,

@@ -17,7 +17,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../assets/models/tablenews.dart';
 import '../../signup/controllers/signup_controller.dart';
 
-class HomeGridViewController extends GetxController {
+class HomeListController extends GetxController {
   RxString usernameAPI = "".obs;
   RxString idUser = "".obs;
   RxList allNewsData = List.empty().obs;

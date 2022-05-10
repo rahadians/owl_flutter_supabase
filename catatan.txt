@@ -29,18 +29,11 @@ Future<void> _upload() async {
     widget.onUpload(imageUrlResponse.data!);
   }
 
- 
-            
-               
-                 
-                   
-                 
-                  
+      
 :
-
-            
-              
+             
                 }),
+
 
 
 

@@ -15,6 +15,8 @@ abstract class Routes {
   static const AVATAR = _Paths.AVATAR;
   static const ADDBERITA = _Paths.ADDBERITA;
   static const HOME_GRID_VIEW = _Paths.HOME_GRID_VIEW;
+  static const HOME_LIST = _Paths.HOME_LIST;
+  static const DETAIL_ITEM = _Paths.DETAIL_ITEM;
 }
 
 abstract class _Paths {
@@ -31,4 +33,6 @@ abstract class _Paths {
   static const AVATAR = '/avatar';
   static const ADDBERITA = '/addberita';
   static const HOME_GRID_VIEW = '/home-grid-view';
+  static const HOME_LIST = '/home-list';
+  static const DETAIL_ITEM = '/detail-item';
 }
