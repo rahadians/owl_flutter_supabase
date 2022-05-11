@@ -10,6 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../assets/models/constant.dart';
 import '../controllers/addnews_controller.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 
 import 'package:intl/intl.dart';
 
@@ -36,6 +37,7 @@ class AddnewsView extends GetView<AddnewsController> {
               Container(
                 // onTap: () => controller.upload(),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(5.0),
@@ -62,7 +64,7 @@ class AddnewsView extends GetView<AddnewsController> {
                                 child: (controller.filebytes != null)
                                     ? Image.memory(
                                         controller.filebytes,
-                                        fit: BoxFit.fill,
+                                        fit: BoxFit.cover,
                                       )
                                     : Image.asset(
                                         "lib/app/assets/img/girlimage.png"),
@@ -119,23 +121,6 @@ class AddnewsView extends GetView<AddnewsController> {
                   }
                   return null;
                 },
-                controller: controller.scanC,
-                keyboardType: TextInputType.text,
-                autocorrect: false,
-                decoration:
-                    kTextFieldDecoration.copyWith(labelText: "Code Scan"),
-                onChanged: (value) => value = controller.scanC.text,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
                 controller: controller.titleC,
                 keyboardType: TextInputType.text,
                 autocorrect: false,
@@ -153,9 +138,8 @@ class AddnewsView extends GetView<AddnewsController> {
                   return null;
                 },
                 autocorrect: false,
-                keyboardType: TextInputType.multiline,
-                minLines: 2,
-                maxLines: 5,
+                keyboardType: TextInputType.text,
+
                 maxLength: null, //menyesuaikan isi kontent
                 controller: controller.contentC,
                 decoration: kTextFieldDecoration.copyWith(
@@ -166,20 +150,22 @@ class AddnewsView extends GetView<AddnewsController> {
               SizedBox(
                 height: 20,
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-                autocorrect: false,
-                keyboardType: TextInputType.multiline,
-                maxLength: null, //menyesuaikan isi kontent
-                controller: controller.descC,
-                decoration:
-                    kTextFieldDecoration.copyWith(labelText: "Description"),
-                onChanged: (value) => value = controller.descC.text,
+              Container(
+                height: 100,
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                  autocorrect: false,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 2,
+                  maxLines: 5,
+                  controller: controller.descC,
+                  onChanged: (value) => value = controller.descC.text,
+                ),
               ),
               SizedBox(
                 height: 20,
@@ -210,22 +196,50 @@ class AddnewsView extends GetView<AddnewsController> {
               SizedBox(
                 height: 10,
               ),
-              // Card(
-              //   elevation: 6,
-              //   shadowColor: Colors.white24,
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(10.0),
-              //     child: BarcodeWidget(
-              //       drawText: true,
-              //       height: 100,
-              //       width: 100,
-              //       data: controller.scanC.text,
-              //       barcode: Barcode.qrCode(
-              //         errorCorrectLevel: BarcodeQRCorrectionLevel.high,
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                controller: controller.barcodeC,
+                keyboardType: TextInputType.text,
+                autocorrect: false,
+                decoration:
+                    kTextFieldDecoration.copyWith(labelText: "Code Item"),
+                onChanged: (_) =>
+                    controller.isiBarcode.value = controller.barcodeC.text,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Card(
+                    elevation: 6,
+                    shadowColor: Colors.white24,
+                  ),
+                  Obx(() => BarcodeWidget(
+                        barcode: Barcode.qrCode(
+                          errorCorrectLevel: BarcodeQRCorrectionLevel.high,
+                        ),
+                        data: controller.isiBarcode.value,
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.white70,
+                        ),
+                      )),
+                  // Container(
+                  //   color: Colors.white,
+                  //   width: 20,
+                  //   height: 20,
+                  //   child: const FlutterLogo(),
+                  // ),
+                ],
+              ),
               SizedBox(
                 height: 20,
               ),

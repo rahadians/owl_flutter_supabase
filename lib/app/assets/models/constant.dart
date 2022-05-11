@@ -9,6 +9,8 @@ class BaseUrl {
   static const cBaseUrl = "https://mnxjbshqqxhbadvuazxt.supabase.co";
   static const cAnonKey =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ueGpic2hxcXhoYmFkdnVhenh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTEyMDA1NDUsImV4cCI6MTk2Njc3NjU0NX0.ROAMxmHTBRPvlxCxZd1xD4Ps4rCvzQYTrE2BjYM3e90";
+  static const SUPABASE_KEY =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ueGpic2hxcXhoYmFkdnVhenh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTEyMDA1NDUsImV4cCI6MTk2Njc3NjU0NX0.ROAMxmHTBRPvlxCxZd1xD4Ps4rCvzQYTrE2BjYM3e90';
 }
 
 Color kLightgreen = Color(0xFFB2DBBF);

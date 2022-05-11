@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-  import 'package:path_provider/path_provider.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../../assets/models/constant.dart';
 
 class AddnewsController extends GetxController {
@@ -44,7 +44,7 @@ class AddnewsController extends GetxController {
   final usernameC = TextEditingController();
   final websiteC = TextEditingController();
   final dateC = TextEditingController();
-  final scanC = TextEditingController();
+  final barcodeC = TextEditingController();
 
   // final SupabaseClient client =
   //     SupabaseClient(BaseUrl.cBaseUrl, BaseUrl.cAnonKey);
@@ -121,6 +121,7 @@ class AddnewsController extends GetxController {
           "date_news": dateC.text,
           "description": descC.text,
           "imageUrl": imageUrlStr.value,
+          "code_item": isiBarcode.value
         }).execute();
         kDialogOk();
         isLoadingadd.value = false;

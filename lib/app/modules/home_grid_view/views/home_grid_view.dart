@@ -76,15 +76,15 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
                                     onTap: () {
                                       Get.toNamed(
                                         Routes.README_NEWS,
-                                        // arguments: [
-                                        //   {
-                                        //     "title": newsBody.title,
-                                        //     "content": newsBody.content,
-                                        //     "description": newsBody.description,
-                                        //     "id_news":
-                                        //         newsBody.idNews.toString()
-                                        //   },
-                                        // ],
+                                        arguments: [
+                                          {
+                                            "title": newsBody.title,
+                                            "content": newsBody.content,
+                                            "description": newsBody.description,
+                                            "id_news":
+                                                newsBody.idNews.toString()
+                                          },
+                                        ],
                                       );
                                     },
                                     child: Card(
@@ -103,38 +103,46 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
                                                       fit: BoxFit.cover)),
                                             ),
                                           ),
+                                          SizedBox(
+                                            height: 2,
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 5.0, top: 3),
-                                            child: Expanded(
-                                              child: Container(
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    "${newsBody.title} ",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20),
-                                                  ),
-                                                ),
-                                                height: 30,
-                                                width: 250,
+                                                left: 8.0),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "${newsBody.title} ",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: 1,
-                                          ),
-                                          Container(
-                                            width: 250,
+                                          Expanded(
                                             child: Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 3.0, top: 5),
-                                              child: Text(
-                                                "${newsBody.content}",
-                                                overflow: TextOverflow.ellipsis,
+                                                left: 5.0,
+                                              ),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: 250,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 3.0,
+                                                              top: 5),
+                                                      child: Text(
+                                                        "${newsBody.content}",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ),

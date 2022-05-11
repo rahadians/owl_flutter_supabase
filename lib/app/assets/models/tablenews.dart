@@ -18,6 +18,7 @@ class TableNews {
     required this.dateNews,
     required this.idUser,
     required this.imageUrl,
+    required this.codeItem,
   });
 
   int idNews;
@@ -28,6 +29,7 @@ class TableNews {
   String dateNews;
   String idUser;
   String imageUrl;
+  String codeItem;
 
   factory TableNews.fromJson(Map<String, dynamic> json) => TableNews(
         idNews: json["id_news"],
@@ -38,6 +40,7 @@ class TableNews {
         dateNews: json["date_news"],
         idUser: json["id_user"],
         imageUrl: json["imageUrl"],
+        codeItem: json["code_item"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,6 +52,7 @@ class TableNews {
         "date_news": dateNews,
         "id_user": idUser,
         "imageUrl": imageUrl,
+        "code_item": codeItem,
       };
 
   static List<TableNews> fromJsonList(List list) {
