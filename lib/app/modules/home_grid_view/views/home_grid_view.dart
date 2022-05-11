@@ -35,7 +35,7 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(3.0),
           child: FutureBuilder(
             future: controller.getNewsData(),
             builder: ((context, snapshot) {
@@ -44,7 +44,6 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
                   child: CircularProgressIndicator(),
                 );
               }
-
               return Obx(() => (controller.allNewsData.length == null)
                   ? Center(
                       child: Text(
@@ -59,9 +58,12 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
                           // : Text("loading")
                           : GridView.builder(
                               gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                childAspectRatio: 2 / 3,
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 2,
+                                mainAxisSpacing: 2,
+                                // mainAxisExtent: 5,
+                                childAspectRatio: 3 / 4,
                               ),
                               itemCount: controller.allNewsData.length,
                               itemBuilder: (context, index) {
@@ -89,31 +91,37 @@ class HomeGridViewView extends GetView<HomeGridViewController> {
                                       color: kLightgreen,
                                       child: Column(
                                         children: [
-                                          Container(
-                                            height: 150,
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: NetworkImage(
-                                                      "${newsBody.imageUrl}",
-                                                    ),
-                                                    fit: BoxFit.cover)),
+                                          Padding(
+                                            padding: const EdgeInsets.all(3.0),
+                                            child: Container(
+                                              height: 150,
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                        "${newsBody.imageUrl}",
+                                                      ),
+                                                      fit: BoxFit.cover)),
+                                            ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 5.0, top: 3),
-                                            child: Container(
-                                              child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "${newsBody.title} ",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 20),
+                                            child: Expanded(
+                                              child: Container(
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    "${newsBody.title} ",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20),
+                                                  ),
                                                 ),
+                                                height: 30,
+                                                width: 250,
                                               ),
-                                              height: 30,
-                                              width: 250,
                                             ),
                                           ),
                                           SizedBox(
