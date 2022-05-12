@@ -112,7 +112,7 @@ class AddnewsView extends GetView<AddnewsController> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 5,
               ),
               TextFormField(
                 validator: (value) {
@@ -128,7 +128,7 @@ class AddnewsView extends GetView<AddnewsController> {
                 onChanged: (value) => value = controller.titleC.text,
               ),
               SizedBox(
-                height: 20,
+                height: 5,
               ),
               TextFormField(
                 validator: (value) {
@@ -148,27 +148,28 @@ class AddnewsView extends GetView<AddnewsController> {
                 onChanged: (value) => value = controller.contentC.text,
               ),
               SizedBox(
-                height: 20,
+                height: 5,
               ),
-              Container(
-                height: 100,
-                child: TextFormField(
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  autocorrect: false,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 2,
-                  maxLines: 5,
-                  controller: controller.descC,
-                  onChanged: (value) => value = controller.descC.text,
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
+                  }
+                  return null;
+                },
+                autocorrect: false,
+                keyboardType: TextInputType.text,
+                minLines: 1,
+                maxLines: 5,
+                maxLength: null, //menyesuaikan isi kontent
+                controller: controller.descC,
+                decoration: kTextFieldDecoration.copyWith(
+                  labelText: "Description",
                 ),
+                onChanged: (value) => value = controller.descC.text,
               ),
               SizedBox(
-                height: 20,
+                height: 5,
               ),
               TextFormField(
                 controller: controller.dateC,
@@ -232,12 +233,6 @@ class AddnewsView extends GetView<AddnewsController> {
                           color: Colors.white70,
                         ),
                       )),
-                  // Container(
-                  //   color: Colors.white,
-                  //   width: 20,
-                  //   height: 20,
-                  //   child: const FlutterLogo(),
-                  // ),
                 ],
               ),
               SizedBox(

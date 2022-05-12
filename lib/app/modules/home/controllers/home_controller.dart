@@ -36,7 +36,7 @@ class HomeController extends GetxController {
         break;
       case 4:
         {
-          Timer(Duration(seconds: 2), () {
+          Timer(Duration(milliseconds: 200), () {
             Get.offAndToNamed(Routes.ADDNEWS);
           });
         }
