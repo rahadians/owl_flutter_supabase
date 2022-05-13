@@ -107,17 +107,17 @@ class AppPages {
       page: () => HomeListView(),
       binding: HomeListBinding(),
     ),
-    // GetPage(
-    //   name: _Paths.DETAIL_ITEM,
-    //   page: () => DetailItemView(),
-    //   binding: DetailItemBinding(),
-    //   children: [
-    //     GetPage(
-    //       name: _Paths.DETAIL_ITEM,
-    //       page: () => DetailItemView(),
-    //       binding: DetailItemBinding(),
-    //     ),
-    //   ],
-    // ),
+    GetPage(
+      name: _Paths.DETAIL_ITEM,
+      page: () => DetailItemView(),
+      binding: DetailItemBinding(),
+      children: [
+        GetPage(
+          name: _Paths.DETAIL_ITEM,
+          page: () => DetailItemView(),
+          binding: DetailItemBinding(),
+        ),
+      ],
+    ),
   ];
 }
