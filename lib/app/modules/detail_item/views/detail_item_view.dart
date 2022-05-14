@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import '../../../assets/models/constant.dart';
 import '../controllers/detail_item_controller.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DetailItemView extends GetView<DetailItemController> {
   @override
@@ -82,7 +83,9 @@ class DetailItemView extends GetView<DetailItemController> {
                       SizedBox(
                         height: 20,
                       ),
-                      TextFormField(
+                      TextField(
+                          onSubmitted: (value) =>
+                              controller.cariData(controller.barcodeC.text),
                           controller: controller.barcodeC,
                           keyboardType: TextInputType.text,
                           autocorrect: false,
@@ -100,90 +103,91 @@ class DetailItemView extends GetView<DetailItemController> {
                 SizedBox(
                   height: 5,
                 ),
-                TextFormField(
-                  enabled: false,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  controller: controller.titleC,
-                  keyboardType: TextInputType.text,
-                  autocorrect: false,
-                  decoration: kTextFieldDecoration.copyWith(labelText: "Title"),
-                  onChanged: (value) => value = controller.titleC.text,
-                ),
+                Obx(() => TextFormField(
+                      enabled: (controller.isEdit.isTrue) ? true : false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      controller: controller.titleC,
+                      keyboardType: TextInputType.text,
+                      autocorrect: false,
+                      decoration:
+                          kTextFieldDecoration.copyWith(labelText: "Title"),
+                      onChanged: (value) => value = controller.titleC.text,
+                    )),
                 SizedBox(
                   height: 5,
                 ),
-                TextFormField(
-                  enabled: false,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  autocorrect: false,
-                  keyboardType: TextInputType.text,
+                Obx(() => TextFormField(
+                      enabled: (controller.isEdit.isTrue) ? true : false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      autocorrect: false,
+                      keyboardType: TextInputType.text,
 
-                  maxLength: null, //menyesuaikan isi kontent
-                  controller: controller.contentC,
-                  decoration: kTextFieldDecoration.copyWith(
-                    labelText: "Content",
-                  ),
-                  onChanged: (value) => value = controller.contentC.text,
-                ),
+                      maxLength: null, //menyesuaikan isi kontent
+                      controller: controller.contentC,
+                      decoration: kTextFieldDecoration.copyWith(
+                        labelText: "Content",
+                      ),
+                      onChanged: (value) => value = controller.contentC.text,
+                    )),
                 SizedBox(
                   height: 5,
                 ),
-                TextFormField(
-                  enabled: false,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                  autocorrect: false,
-                  keyboardType: TextInputType.text,
-                  minLines: 1,
-                  maxLines: 5,
-                  maxLength: null, //menyesuaikan isi kontent
-                  controller: controller.descC,
-                  decoration: kTextFieldDecoration.copyWith(
-                    labelText: "Description",
-                  ),
-                  onChanged: (value) => value = controller.descC.text,
-                ),
+                Obx(() => TextFormField(
+                      enabled: (controller.isEdit.isTrue) ? true : false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      autocorrect: false,
+                      keyboardType: TextInputType.text,
+                      minLines: 1,
+                      maxLines: 5,
+                      maxLength: null, //menyesuaikan isi kontent
+                      controller: controller.descC,
+                      decoration: kTextFieldDecoration.copyWith(
+                        labelText: "Description",
+                      ),
+                      onChanged: (value) => value = controller.descC.text,
+                    )),
                 SizedBox(
                   height: 5,
                 ),
-                TextFormField(
-                  enabled: false,
-                  controller: controller.dateC,
-                  keyboardType: TextInputType.datetime,
-                  decoration: kTextFieldDecoration.copyWith(
-                    labelText: "Tanggal Berita",
-                    hintText: "Masukkan Tanggal",
-                  ),
-                  onTap: () async {
-                    DateTime date = DateTime(1900);
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                    // Get.focusScope(date());
-                    date = (await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100)))!;
+                Obx(() => TextFormField(
+                      enabled: (controller.isEdit.isTrue) ? true : false,
+                      controller: controller.dateC,
+                      keyboardType: TextInputType.datetime,
+                      decoration: kTextFieldDecoration.copyWith(
+                        labelText: "Tanggal Berita",
+                        hintText: "Masukkan Tanggal",
+                      ),
+                      onTap: () async {
+                        DateTime date = DateTime(1900);
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        // Get.focusScope(date());
+                        date = (await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100)))!;
 
-                    // controller.dateC.text = dateformat(date.toIso8601String());
-                    controller.dateC.text =
-                        DateFormat('dd-MMM-yyyy').format(date);
-                  },
-                  onChanged: (value) => value = controller.dateC.text,
-                ),
+                        // controller.dateC.text = dateformat(date.toIso8601String());
+                        controller.dateC.text =
+                            DateFormat('dd-MMM-yyyy').format(date);
+                      },
+                      onChanged: (value) => value = controller.dateC.text,
+                    )),
                 SizedBox(
                   height: 10,
                 ),
@@ -260,15 +264,14 @@ class DetailItemView extends GetView<DetailItemController> {
                 // ),
                 // SizedBox(height:20),
                 ElevatedButton(
-                    onPressed: () {
-                      controller
-                          .cariData(controller.scanResult.value.toString());
-                    },
-                    child: Obx(
-                      () => Text((controller.isLoadingadd.isTrue)
-                          ? "Loading.."
-                          : "Simpan"),
-                    ))
+                  onPressed: () {
+                    controller.onUpdate();
+                  },
+                  child: Obx(
+                    () => Text(
+                        (controller.isLoading.isTrue) ? "Loading.." : "Simpan"),
+                  ),
+                ),
               ]),
             ]),
           ),
@@ -277,9 +280,10 @@ class DetailItemView extends GetView<DetailItemController> {
             style: TabStyle.textIn,
             items: [
               TabItem(icon: Icons.edit, title: 'Edit'),
+              TabItem(icon: Icons.search_outlined, title: 'Search'),
               TabItem(icon: Icons.delete_forever, title: 'Remove'),
             ],
-            initialActiveIndex: 0, //optional, default as 0
+            initialActiveIndex: 1, //optional, default as 0
             onTap: (int i) {
               controller.pilihan.value = i;
               controller.selectIndex();

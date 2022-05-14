@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,13 @@ class DetailItemController extends GetxController {
   SupabaseClient client = Supabase.instance.client;
   RxString scanResult = "".obs;
   RxString isiBarcode = "".obs;
-  RxBool isLoadingadd = false.obs;
+  RxBool isLoading = false.obs;
   RxInt pilihan = 0.obs;
   RxList allGetData = List.empty().obs;
+  RxBool isEdit = false.obs;
+  RxInt noId = 0.obs;
 
+  @override
   final titleC = TextEditingController();
   final contentC = TextEditingController();
   final descC = TextEditingController();
@@ -29,23 +33,27 @@ class DetailItemController extends GetxController {
     switch (pilihan.value) {
       case 0:
         {
-          Timer(Duration(milliseconds: 200), () {
-            Get.offAndToNamed(Routes.HOME_LIST);
-          });
+          isEdit.value = true;
         }
         break;
 
       case 1:
         {
           Timer(Duration(milliseconds: 200), () {
-            Get.toNamed(Routes.DETAIL_ITEM);
+            scanBarcode();
           });
+        }
+        break;
+      case 2:
+        {
+          onRemove();
         }
         break;
     }
   }
 
   Future<dynamic> scanBarcode() async {
+    isEdit.value = false;
     try {
       scanResult.value = await FlutterBarcodeScanner.scanBarcode(
         "#ff6666",
@@ -53,8 +61,13 @@ class DetailItemController extends GetxController {
         true,
         ScanMode.QR,
       );
-      barcodeC.text = scanResult.value;
-      cariData(scanResult.value.toString());
+      if (scanResult.value == "-1") {
+        barcodeC.text = "";
+      } else {
+        barcodeC.text = scanResult.value;
+        isiBarcode.value = scanResult.value;
+        cariData(scanResult.value.toString());
+      }
     } on PlatformException catch (error) {
       print(error);
     }
@@ -88,23 +101,70 @@ class DetailItemController extends GetxController {
 
       allGetData.refresh();
       for (var item in allGetData.value) {
+        noId.value = item.idNews;
         titleC.text = item.title;
         contentC.text = item.content;
         descC.text = item.description;
-        print(item.dateNews);
-        dateC.text = item.dateNews.substring(0, 10);
-        ;
+        // dateC.text = item.dateNews.substring(0, 10);
+        DateTime tanggal = DateTime.parse(item.dateNews);
+        dateC.text = DateFormat('dd-MMM-yyyy').format(tanggal);
       }
     } catch (err) {
       print("err");
     }
   }
 
-  // void clear() {
-  //   titleC.clear();
-  //   contentC.clear();
-  //   descC.clear();
-  //   dateC.clear();
-  //   barcodeC.clear();
-  // }
+  Future<void> onUpdate() async {
+    isLoading.value = true;
+    print(noId.value);
+
+    try {
+      PostgrestResponse<dynamic> result = await client.from("tbl_news").update({
+        "code_item": isiBarcode.value,
+        "title": titleC.text,
+        "content": contentC.text,
+        "description": descC.text,
+        "date_news": dateC.text,
+      }).match({"id_news": noId.value}).execute();
+      print(result.status);
+
+      isLoading.value = false;
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Future onRemove() async {
+    isLoading.value = true;
+    Get.defaultDialog(
+        title: "Warning \u{26A0}",
+        middleText: "Are you sure to delete this item?",
+        textCancel: "Cancel",
+        onCancel: () {
+          Get.back();
+        },
+        textConfirm: "Yes",
+        onConfirm: () async {
+          try {
+            print(noId.value);
+            await client
+                .from("tbl_news")
+                .delete()
+                .match({"id_news": noId.value}).execute();
+            clear();
+            Get.back();
+          } catch (err) {
+            print(err);
+          }
+        });
+    isLoading.value = false;
+  }
+
+  void clear() {
+    titleC.clear();
+    contentC.clear();
+    descC.clear();
+    dateC.clear();
+    barcodeC.clear();
+  }
 }
